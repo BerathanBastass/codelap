@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "234606858208",
+    "project_id": "codelap-d1e12",
+    "storage_bucket": "codelap-d1e12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234606858208:android:c699e5ec8588bc0445a585",
+        "android_client_info": {
+          "package_name": "com.example.codelap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY4wVcMwgORe_S7uR-SSPXH9npy9ItW5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
