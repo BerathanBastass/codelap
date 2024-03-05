@@ -1,3 +1,4 @@
+import 'package:codelap/feature/auth/forgot_password/view/fpassword_screens.dart';
 import 'package:codelap/feature/auth/sign%C4%B1n/cubit/sign_n_cubit_state.dart';
 import 'package:codelap/feature/auth/signup/view/signup_screens.dart';
 
@@ -104,9 +105,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform buildTextContainer() {
     return Transform.translate(
-      offset: const Offset(-30, -300),
+      offset: const Offset(40, -300),
       child: Text(
-        "Welcome Back",
+        "Tekrar Hoşgeldiniz",
         style: GoogleFonts.rem(
           textStyle: const TextStyle(
             fontSize: 45,
@@ -138,7 +139,7 @@ class _SignInScreenState extends State<SignInScreen> {
         width: 300,
         child: TextFormField(
           decoration: InputDecoration(
-            hintText: 'Your Email',
+            hintText: 'Email',
             hintStyle: const TextStyle(color: CustomColors.salt),
             filled: true,
             fillColor: Colors.white.withOpacity(0.3),
@@ -169,7 +170,7 @@ class _SignInScreenState extends State<SignInScreen> {
         width: 300,
         child: TextFormField(
           decoration: InputDecoration(
-            hintText: 'Password',
+            hintText: 'Sifre',
             hintStyle: const TextStyle(color: CustomColors.salt),
             filled: true,
             fillColor: Colors.white.withOpacity(0.3),
@@ -195,12 +196,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform buildText() {
     return Transform.translate(
-      offset: const Offset(-100, -150),
+      offset: const Offset(-70, -150),
       child: TextButton(
         onPressed: () {
           Navigator.push(
             context as BuildContext,
-            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+            MaterialPageRoute(builder: (context) => const SignUpscreen()),
           );
         },
         style: TextButton.styleFrom(
@@ -212,10 +213,10 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         child: Text(
-          "Sign Up",
+          "Hesap Oluştur",
           style: GoogleFonts.rem(
             textStyle: const TextStyle(
-              fontSize: 35,
+              fontSize: 20,
               color: Colors.black,
             ),
           ),
@@ -256,7 +257,10 @@ class _SignInScreenState extends State<SignInScreen> {
     return Transform.translate(
         offset: const Offset(100, -210),
         child: TextButton(
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ForgotPasswordScreen())),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
