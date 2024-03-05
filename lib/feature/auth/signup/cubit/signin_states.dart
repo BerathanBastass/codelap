@@ -9,7 +9,7 @@ abstract class AuthState extends Equatable {
 
 class AuthInitialState extends AuthState {}
 
-class SignUpSuccessState extends AuthState {}
+class SignInSuccessState extends AuthState {}
 
 class AuthErrorState extends AuthState {
   final String errorMessage;

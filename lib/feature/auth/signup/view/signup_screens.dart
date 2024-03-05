@@ -1,37 +1,38 @@
+import 'package:codelap/core/splash.dart';
 import 'package:codelap/core/utils/colors.dart';
-import 'package:codelap/feature/auth/sign%C4%B1n/cubit/signin_cubit.dart';
-import 'package:codelap/feature/auth/sign%C4%B1n/cubit/signin_states.dart';
-import 'package:codelap/feature/auth/signup/view/signup_screen.dart';
-import 'package:codelap/feature/homepage/homepage.dart';
+import 'package:codelap/feature/auth/signup/cubit/signin_cubit.dart';
+import 'package:codelap/feature/auth/signup/cubit/signin_states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+import '../../signın/view/signın_screens.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   late String email = '';
   late String password = '';
   final formkey = GlobalKey<FormState>();
   final firebaseAuth = FirebaseAuth.instance;
-
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.pageColor,
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is SignUpSuccessState) {
+          if (state is SignInSuccessState) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
+              MaterialPageRoute(builder: (context) => SplashPage()),
             );
           } else if (state is AuthErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -179,15 +180,28 @@ class _SignInScreenState extends State<SignInScreen> {
       offset: const Offset(-100, 10),
       child: TextButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SignUpScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SignInScreen()),
+          );
         },
-        child: Text("Sign Up",
-            style: GoogleFonts.rem(
-                textStyle: const TextStyle(
+        style: TextButton.styleFrom(
+          backgroundColor: CustomColors.pageColor,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            side: const BorderSide(color: Colors.black, width: 5),
+          ),
+        ),
+        child: Text(
+          "Sign In",
+          style: GoogleFonts.rem(
+            textStyle: const TextStyle(
               fontSize: 35,
               color: Colors.black,
-            ))),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -209,7 +223,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return Transform.translate(
       offset: const Offset(120, -96),
       child: Text(
-        "Sign In",
+        "Sign Up",
         style: GoogleFonts.rem(
           textStyle: const TextStyle(
             fontSize: 25,
@@ -234,7 +248,7 @@ class _SignInScreenState extends State<SignInScreen> {
           onTap: () {
             if (formkey.currentState!.validate()) {
               formkey.currentState!.save();
-              context.read<AuthCubit>().signUp(email, password);
+              context.read<AuthCubit>().signIn(email, password);
             }
           },
           child: InkResponse(
