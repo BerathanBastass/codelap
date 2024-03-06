@@ -1,9 +1,9 @@
-import 'package:codelap/feature/auth/sign%C4%B1n/view/sign%C4%B1n_screens.dart';
-import 'package:codelap/feature/homepage/homepage.dart';
+import 'package:codelap/feature/bottombar/bottombar.dart';
+import 'package:codelap/feature/homepage/cubit/cubit/lanlar_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'feature/auth/forgot_password/cubit/cubit/fpassword_cubit_cubit.dart';
 import 'feature/auth/signup/cubit/signin_cubit.dart';
 import 'feature/auth/signın/cubit/sign_n_cubit_cubit.dart';
 
@@ -18,6 +18,12 @@ void main() async {
         ),
         BlocProvider<SignInCubit>(
           create: (context) => SignInCubit(),
+        ),
+        BlocProvider<PasswordResetCubit>(
+          create: (context) => PasswordResetCubit(),
+        ),
+        BlocProvider<HomeCubit>(
+          create: (context) => HomeCubit(),
         ),
       ],
       child: const MyApp(),
@@ -34,9 +40,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const SignInScreen(),
+      home: const BottomBar(),
       routes: {
-        "/homePage": (context) => const HomePage(),
+        "/homePage": (context) => const BottomBar(),
       },
     );
   }
