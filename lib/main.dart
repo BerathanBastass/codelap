@@ -1,4 +1,5 @@
-import 'package:codelap/feature/homepage/home_page.dart';
+import 'package:codelap/feature/bottombar/bottombar.dart';
+import 'package:codelap/feature/homepage/cubit/cubit/lanlar_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,9 @@ void main() async {
         BlocProvider<PasswordResetCubit>(
           create: (context) => PasswordResetCubit(),
         ),
+        BlocProvider<HomeCubit>(
+          create: (context) => HomeCubit(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -36,9 +40,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const HomepageScreen(),
+      home: const BottomBar(),
       routes: {
-        "/homePage": (context) => const HomepageScreen(),
+        "/homePage": (context) => const BottomBar(),
       },
     );
   }

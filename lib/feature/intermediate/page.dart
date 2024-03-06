@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codelap/core/utils/colors.dart';
-import 'package:codelap/feature/homepage/home_page.dart';
+import 'package:codelap/feature/bottombar/bottombar.dart';
+
 import 'package:flutter/material.dart';
 
 class Home2 extends StatefulWidget {
@@ -18,6 +19,9 @@ class _Home2State extends State<Home2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: null,
+      ),
       backgroundColor: CustomColors.salt,
       body: Center(
         child: Padding(
@@ -77,7 +81,7 @@ class _Home2State extends State<Home2> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomepageScreen(),
+                            builder: (context) => const BottomBar(),
                           ),
                         );
                       }
