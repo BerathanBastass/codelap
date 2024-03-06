@@ -1,6 +1,4 @@
-import 'package:codelap/feature/auth/sign%C4%B1n/view/sign%C4%B1n_screens.dart';
 import 'package:codelap/feature/homepage/home_page.dart';
-import 'package:codelap/feature/intermediate/intermediate_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const SignInScreen(),
+      home: const HomepageScreen(),
       routes: {
         "/homePage": (context) => const HomepageScreen(),
       },
