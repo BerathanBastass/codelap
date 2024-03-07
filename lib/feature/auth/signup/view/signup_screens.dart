@@ -2,7 +2,6 @@ import 'package:codelap/core/splash.dart';
 import 'package:codelap/core/utils/colors.dart';
 import 'package:codelap/feature/auth/sign%C4%B1n/view/sign%C4%B1n_screens.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,18 +10,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../cubit/signin_cubit.dart';
 import '../cubit/signin_states.dart';
 
-class SignUpscreen extends StatefulWidget {
-  const SignUpscreen({super.key});
+class SignUpcreen extends StatefulWidget {
+  const SignUpcreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpscreen> createState() => _SignUpScreenState();
+  _SignUpcreenState createState() => _SignUpcreenState();
 }
 
-class _SignUpScreenState extends State<SignUpscreen> {
+class _SignUpcreenState extends State<SignUpcreen> {
   late String email = '';
   late String password = '';
   final formkey = GlobalKey<FormState>();
-  final firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -30,24 +28,10 @@ class _SignUpScreenState extends State<SignUpscreen> {
       backgroundColor: CustomColors.pageColor,
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is SignUpSuccessState) {
+          if (state is NavigateToHomeState) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SplashPage()),
-            );
-          } else if (state is AuthErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  "Error Message: Enter Email and Password format correctly!",
-                  style: TextStyle(
-                    color: CustomColors.pageColor,
-                    fontSize: 20,
-                  ),
-                ),
-                backgroundColor: CustomColors.purpleColor,
-                duration: Duration(seconds: 5),
-              ),
             );
           }
         },
@@ -150,8 +134,8 @@ class _SignUpScreenState extends State<SignUpscreen> {
         child: TextFormField(
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'Sifre',
-            helperText: "Must enter six values",
+            hintText: 'Şifre',
+            helperText: "En az altı karakter girmelisiniz",
             hintStyle: const TextStyle(color: CustomColors.salt),
             filled: true,
             fillColor: Colors.white.withOpacity(0.3),
@@ -194,7 +178,7 @@ class _SignUpScreenState extends State<SignUpscreen> {
       child: TextButton(
         onPressed: () {
           Navigator.push(
-            context as BuildContext,
+            context,
             MaterialPageRoute(builder: (context) => const SignInScreen()),
           );
         },
@@ -230,7 +214,7 @@ class _SignUpScreenState extends State<SignUpscreen> {
           color: CustomColors.purpleColor,
         ),
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (formkey.currentState!.validate()) {
               formkey.currentState!.save();
               context.read<AuthCubit>().signUp(email, password);

@@ -17,6 +17,7 @@ class _InfosState extends State<Infos> {
       backgroundColor: CustomColors.purpleColor,
       appBar: AppBar(
         leading: null,
+        automaticallyImplyLeading: false,
         backgroundColor: CustomColors.purpleColor,
         title: const Text("Hangisi Olmak İstiyorsun?"),
       ),
@@ -29,9 +30,13 @@ class _InfosState extends State<Infos> {
               imagePath: "assets/developer.jpeg",
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Home2()),
-                );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Home2(),
+                      settings: const RouteSettings(name: 'MyPageRoute'),
+                      maintainState: true,
+                      fullscreenDialog: false,
+                    ));
               },
             ),
             const SizedBox(height: 40),
@@ -54,10 +59,9 @@ class _InfosState extends State<Infos> {
 
 class CardWidget extends StatelessWidget {
   final String title;
-  final String imagePath; // Yeni eklenen özellik: Resim yolu
+  final String imagePath;
   final VoidCallback onTap;
 
-  // Yeni eklenen parametre constructor'a eklendi
   const CardWidget(
       {required this.title, required this.imagePath, required this.onTap});
 

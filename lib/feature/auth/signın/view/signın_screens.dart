@@ -1,5 +1,4 @@
 import 'package:codelap/feature/auth/forgot_password/view/fpassword_screens.dart';
-import 'package:codelap/feature/auth/sign%C4%B1n/cubit/sign_n_cubit_state.dart';
 import 'package:codelap/feature/auth/signup/view/signup_screens.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/splash.dart';
 import '../../../../core/utils/colors.dart';
 import '../cubit/sign_n_cubit_cubit.dart';
+import '../cubit/sign_n_cubit_state.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -24,6 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late String password = '';
   final formkey = GlobalKey<FormState>();
   final firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
             );
           } else if (state is AuthErrorsState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text(
                   "Error Message: Enter Email and Password format correctly!",
                   style: TextStyle(
@@ -47,6 +48,20 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 backgroundColor: CustomColors.purpleColor,
                 duration: Duration(seconds: 5),
+              ),
+            );
+          } else if (state is EmailNotVerifiedState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Error Message: Email is not verified. Please check your email for verification or press the button after verification!",
+                  style: TextStyle(
+                    color: CustomColors.pageColor,
+                    fontSize: 20,
+                  ),
+                ),
+                backgroundColor: CustomColors.purpleColor,
+                duration: Duration(seconds: 7),
               ),
             );
           }
@@ -201,7 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
         onPressed: () {
           Navigator.push(
             context as BuildContext,
-            MaterialPageRoute(builder: (context) => const SignUpscreen()),
+            MaterialPageRoute(builder: (context) => const SignUpcreen()),
           );
         },
         style: TextButton.styleFrom(
@@ -236,10 +251,17 @@ class _SignInScreenState extends State<SignInScreen> {
           color: CustomColors.pageColor,
         ),
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (formkey.currentState!.validate()) {
               formkey.currentState!.save();
-              context.read<SignInCubit>().signInAuth(email, password);
+              final success =
+                  await context.read<SignInCubit>().signInAuth(email, password);
+              if (success) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SplashPage()),
+                );
+              }
             }
           },
           child: InkResponse(
@@ -255,29 +277,32 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform forgotPassword() {
     return Transform.translate(
-        offset: const Offset(100, -210),
-        child: TextButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const ForgotPasswordScreen())),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Forgot Password',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
-              Container(
-                width: 150,
-                height: 5,
-                color: CustomColors.pageColor,
-              ),
-            ],
+      offset: const Offset(120, -250),
+      child: TextButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ForgotPasswordScreen(),
           ),
-        ));
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Forgot Password',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+              ),
+            ),
+            Container(
+              width: 150,
+              height: 5,
+              color: CustomColors.pageColor,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

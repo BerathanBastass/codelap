@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:codelap/feature/advert/cubit/lan_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/colors.dart';
 
@@ -20,7 +22,6 @@ class _AdvertViewState extends State<AdvertView> {
   final formKey = GlobalKey<FormState>();
   String? selectedType;
 
-  // Seçilebilen 3 kelime
   final List<String> types = [
     'Mobil Uyguluma',
     'Web Sitesi',
@@ -30,7 +31,11 @@ class _AdvertViewState extends State<AdvertView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.pageColor,
       appBar: AppBar(
+        leading: null,
+        backgroundColor: CustomColors.pageColor,
+        automaticallyImplyLeading: false,
         title: const Text('Ilan Oluştur'),
       ),
       body: Padding(
@@ -54,7 +59,7 @@ class _AdvertViewState extends State<AdvertView> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  _ilanOlustur();
+                  _ilanOlustur(context);
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
@@ -232,38 +237,25 @@ class _AdvertViewState extends State<AdvertView> {
     );
   }
 
-  Future<void> _ilanOlustur() async {
+  Future<void> _ilanOlustur(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      // Form doğrulama başarılı, işlemleri gerçekleştir.
-      try {
-        String baslik = _baslikController.text;
-        String aciklama = _aciklamaController.text;
-        double fiyat = double.parse(_fiyatController.text);
-        String tur = selectedType ?? ''; // Seçilen tip
-        String email = _emailController.text;
-        String image = _imageController.text;
+      AdvertViewCubit cubit = context.read<AdvertViewCubit>();
 
-        await FirebaseFirestore.instance.collection('Ilanlar').add({
-          'baslik': baslik,
-          'aciklama': aciklama,
-          'fiyat': fiyat,
-          'tur': tur,
-          'email': email,
-          'image': image,
-        });
+      String baslik = _baslikController.text;
+      String aciklama = _aciklamaController.text;
+      double fiyat = double.parse(_fiyatController.text);
+      String tur = selectedType ?? '';
+      String email = _emailController.text;
+      String image = _imageController.text;
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ilan başarıyla oluşturuldu.'),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ilan oluşturulurken bir hata oluştu.'),
-          ),
-        );
-      }
+      cubit.createAdvert(
+        baslik: baslik,
+        aciklama: aciklama,
+        fiyat: fiyat,
+        tur: tur,
+        email: email,
+        image: image,
+      );
     }
   }
 }

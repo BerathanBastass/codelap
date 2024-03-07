@@ -1,3 +1,4 @@
+import 'package:codelap/feature/advert/cubit/lan_cubit.dart';
 import 'package:codelap/feature/bottombar/bottombar.dart';
 import 'package:codelap/feature/homepage/cubit/cubit/lanlar_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,6 +25,9 @@ void main() async {
         ),
         BlocProvider<HomeCubit>(
           create: (context) => HomeCubit(),
+        ),
+        BlocProvider<AdvertViewCubit>(
+          create: (context) => AdvertViewCubit(),
         ),
       ],
       child: const MyApp(),

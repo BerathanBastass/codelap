@@ -21,6 +21,7 @@ class _Home2State extends State<Home2> {
     return Scaffold(
       appBar: AppBar(
         leading: null,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: CustomColors.salt,
       body: Center(
@@ -81,6 +82,9 @@ class _Home2State extends State<Home2> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
+                            settings: const RouteSettings(name: 'MyPageRoute'),
+                            maintainState: true,
+                            fullscreenDialog: false,
                             builder: (context) => const BottomBar(),
                           ),
                         );

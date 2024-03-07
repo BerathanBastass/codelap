@@ -28,11 +28,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
     return BlocProvider(
       create: (context) => _homeCubit,
       child: Scaffold(
-        backgroundColor: CustomColors.salt,
+        backgroundColor: CustomColors.pageColor,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: AppBar(
+            backgroundColor: CustomColors.pageColor,
             leading: null,
+            automaticallyImplyLeading: false,
             title: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 if (state is LoadedDataState) {
@@ -88,7 +90,6 @@ class _HomeBody extends StatelessWidget {
               var fiyat = data['fiyat'] ?? '';
               var tur = data['tur'] ?? '';
               var image = data['image'] ?? '';
-              var ilanSahibiID = data['ilanSahibiID'] ?? '';
 
               return InkWell(
                 onTap: () {

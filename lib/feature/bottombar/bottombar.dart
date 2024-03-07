@@ -16,7 +16,6 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _selectedItemPosition = 0;
 
-  // Sayfa listesi
   final List<Widget> _pages = [
     const HomePageScreen(),
     const AdvertView(),
@@ -26,8 +25,8 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.salt,
-      body: _pages[_selectedItemPosition], // Seçilen sayfayı göster
+      backgroundColor: CustomColors.pageColor,
+      body: _pages[_selectedItemPosition],
       bottomNavigationBar: SnakeNavigationBar.color(
         behaviour: SnakeBarBehaviour.floating,
         snakeShape: SnakeShape.circle,

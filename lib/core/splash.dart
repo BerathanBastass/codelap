@@ -14,22 +14,24 @@ class SplashPage extends StatefulWidget {
 class SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
-    return EasySplashScreen(
-      logo: Image.asset('assets/codelab_logo.png'),
-      logoWidth: 200,
-      title: const Text(
-        "Congratulations! Your user has been successfully created",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        textAlign: TextAlign.center,
+    return Scaffold(
+      body: EasySplashScreen(
+        logo: Image.asset('assets/codelab_logo.png'),
+        logoWidth: 200,
+        title: const Text(
+          "Congratulations! Your user has been successfully created",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: CustomColors.pageColor,
+        showLoader: true,
+        loadingText: const Text(
+          "Welcome aboard my friend",
+          style: TextStyle(fontSize: 20),
+        ),
+        navigator: const Infos(),
+        durationInSeconds: 5,
       ),
-      backgroundColor: CustomColors.pageColor,
-      showLoader: true,
-      loadingText: const Text(
-        "Welcome aboard my friend",
-        style: TextStyle(fontSize: 20),
-      ),
-      navigator: const Infos(),
-      durationInSeconds: 5,
     );
   }
 }

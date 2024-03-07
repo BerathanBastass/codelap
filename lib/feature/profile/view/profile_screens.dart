@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:codelap/feature/profile/settings/view/settings_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -27,14 +28,21 @@ class _ProfileScreensState extends State<ProfileScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: null,
-        backgroundColor: CustomColors.purpleColor,
+        backgroundColor: CustomColors.pageColor,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsView()));
+            },
+            icon: const Icon(FontAwesomeIcons.bars)),
         title: const Text(
           "Profil",
           style: TextStyle(fontSize: 25),
         ),
       ),
-      backgroundColor: CustomColors.salt,
+      backgroundColor: CustomColors.pageColor,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Form(
