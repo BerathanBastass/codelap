@@ -1,9 +1,8 @@
 # CodeLab
 
-My Flutter project.
+The service application I developed for freelance software developers can create advertisements for themselves and be found by customers.
 
 ## ScreenShots
-
 ![ScreenShots](assets/app_photos1.png) 
 ![ScreenShots](assets/app_photos2.png)
 Screens of the application
