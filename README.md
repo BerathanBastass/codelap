@@ -4,8 +4,8 @@ My Flutter project.
 
 ## ScreenShots
 
-![ScreenShots](assets/app_photos1.png) (assets/app_photos2.png)
- 
+![ScreenShots](assets/app_photos1.png) 
+![ScreenShots](assets/app_photos2.png)
 Screens of the application
 
 ## Run The Application
