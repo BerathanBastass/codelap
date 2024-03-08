@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../../core/applocalizations/app_localizations.dart';
 import '../cubit/signin_cubit.dart';
 import '../cubit/signin_states.dart';
 
@@ -14,6 +15,7 @@ class SignUpcreen extends StatefulWidget {
   const SignUpcreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _SignUpcreenState createState() => _SignUpcreenState();
 }
 
@@ -81,12 +83,12 @@ class _SignUpcreenState extends State<SignUpcreen> {
 
   Transform buildTextContainer() {
     return Transform.translate(
-      offset: const Offset(-70, -170),
+      offset: const Offset(-40, -160),
       child: Text(
-        "Hesap\nOluştur",
+        AppLocalizations.of(context).translate('HesapOluştur'),
         style: GoogleFonts.rem(
           textStyle: const TextStyle(
-            fontSize: 45,
+            fontSize: 35,
             color: Colors.white,
             decorationColor: CustomColors.purpleColor,
           ),
@@ -113,7 +115,7 @@ class _SignUpcreenState extends State<SignUpcreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your email';
+              return AppLocalizations.of(context).translate('EmailValidator');
             }
             return null;
           },
@@ -134,8 +136,9 @@ class _SignUpcreenState extends State<SignUpcreen> {
         child: TextFormField(
           obscureText: true,
           decoration: InputDecoration(
-            hintText: 'Şifre',
-            helperText: "En az altı karakter girmelisiniz",
+            hintText: AppLocalizations.of(context).translate('Sifre'),
+            helperText: AppLocalizations.of(context).translate('HelperText'),
+            helperStyle: const TextStyle(fontSize: 10),
             hintStyle: const TextStyle(color: CustomColors.salt),
             filled: true,
             fillColor: Colors.white.withOpacity(0.3),
@@ -146,7 +149,8 @@ class _SignUpcreenState extends State<SignUpcreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your password';
+              return AppLocalizations.of(context)
+                  .translate('PasswordValidator');
             }
             return null;
           },
@@ -191,7 +195,7 @@ class _SignUpcreenState extends State<SignUpcreen> {
           ),
         ),
         child: Text(
-          "Giriş Yap",
+          AppLocalizations.of(context).translate('GirisYap'),
           style: GoogleFonts.rem(
             textStyle: const TextStyle(
               fontSize: 25,

@@ -3,69 +3,45 @@ import 'package:codelap/core/utils/colors.dart';
 import 'package:codelap/feature/homepage/detail/view/advert_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/applocalizations/app_localizations.dart';
 import '../cubit/cubit/lanlar_cubit.dart';
-import '../cubit/cubit/lanlar_state.dart';
 
-class HomePageScreen extends StatefulWidget {
+class HomePageScreen extends StatelessWidget {
   const HomePageScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
-}
-
-class _HomePageScreenState extends State<HomePageScreen> {
-  late HomeCubit _homeCubit;
-
-  @override
-  void initState() {
-    super.initState();
-    _homeCubit = HomeCubit();
-    _homeCubit.fetchData();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final homeCubit = HomeCubit()..fetchData();
+
     return BlocProvider(
-      create: (context) => _homeCubit,
+      create: (context) => homeCubit,
       child: Scaffold(
         backgroundColor: CustomColors.pageColor,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
+          preferredSize: const Size.fromHeight(50.0),
           child: AppBar(
-            backgroundColor: CustomColors.pageColor,
             leading: null,
+            backgroundColor: CustomColors.pageColor,
             automaticallyImplyLeading: false,
-            title: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, state) {
-                if (state is LoadedDataState) {
-                  var data = state.data.data() as Map<String, dynamic> ?? {};
-                  var name = data['Name'] as String? ?? '';
-                  return Center(
-                    child: Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
+            title: Text(
+              AppLocalizations.of(context).translate('İlanlar'),
+              style: const TextStyle(
+                fontSize: 25,
+              ),
             ),
           ),
         ),
-        body: _HomeBody(),
+        body: const _HomeBody(),
       ),
     );
   }
 }
 
 class _HomeBody extends StatelessWidget {
+  const _HomeBody({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final homeCubit = BlocProvider.of<HomeCubit>(context);
-
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('Ilanlar').snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -96,12 +72,14 @@ class _HomeBody extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          AdvertDetail(ilanID: snapshot.data!.docs[index].id),
+                      builder: (context) => AdvertDetail(
+                        ilanID: snapshot.data!.docs[index].id,
+                      ),
                     ),
                   );
                 },
                 child: Card(
+                  elevation: 30,
                   child: Column(
                     children: [
                       Expanded(
@@ -115,8 +93,10 @@ class _HomeBody extends StatelessWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Fiyat: $fiyat'),
-                            Text('Tür: $tur'),
+                            Text(
+                                ' ${AppLocalizations.of(context).translate('Fiyat')}: $fiyat'),
+                            Text(
+                                '${AppLocalizations.of(context).translate('Tür')}: $tur'),
                           ],
                         ),
                       ),

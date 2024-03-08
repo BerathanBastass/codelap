@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:codelap/feature/auth/forgot_password/view/fpassword_screens.dart';
 import 'package:codelap/feature/auth/signup/view/signup_screens.dart';
 
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/applocalizations/app_localizations.dart';
 import '../../../../core/splash.dart';
 import '../../../../core/utils/colors.dart';
 import '../cubit/sign_n_cubit_cubit.dart';
@@ -34,11 +36,11 @@ class _SignInScreenState extends State<SignInScreen> {
           if (state is SignInSuccesssState) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SplashPage()),
+              MaterialPageRoute(builder: (context) => const SplashPage()),
             );
           } else if (state is AuthErrorsState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text(
                   "Error Message: Enter Email and Password format correctly!",
                   style: TextStyle(
@@ -52,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
             );
           } else if (state is EmailNotVerifiedState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text(
                   "Error Message: Email is not verified. Please check your email for verification or press the button after verification!",
                   style: TextStyle(
@@ -120,9 +122,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform buildTextContainer() {
     return Transform.translate(
-      offset: const Offset(40, -300),
+      offset: const Offset(30, -300),
       child: Text(
-        "Tekrar Hoşgeldiniz",
+        AppLocalizations.of(context).translate('TekrarHosgeldiniz'),
         style: GoogleFonts.rem(
           textStyle: const TextStyle(
             fontSize: 45,
@@ -136,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform elipseWhite() {
     return Transform.translate(
-      offset: const Offset(90, -80),
+      offset: const Offset(90, -150),
       child: Column(
         children: [
           Image.asset(
@@ -165,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your email';
+              return AppLocalizations.of(context).translate('EmailValidator');
             }
             return null;
           },
@@ -196,7 +198,8 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your password';
+              return AppLocalizations.of(context)
+                  .translate('PasswordValidator');
             }
             return null;
           },
@@ -215,6 +218,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: TextButton(
         onPressed: () {
           Navigator.push(
+            // ignore: unnecessary_cast
             context as BuildContext,
             MaterialPageRoute(builder: (context) => const SignUpcreen()),
           );
@@ -228,7 +232,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         child: Text(
-          "Hesap Oluştur",
+          AppLocalizations.of(context).translate('HesapOluştur'),
           style: GoogleFonts.rem(
             textStyle: const TextStyle(
               fontSize: 20,
@@ -242,7 +246,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform button() {
     return Transform.translate(
-      offset: const Offset(120, -410),
+      offset: const Offset(120, -470),
       child: Container(
         width: 90.0,
         height: 100.0,
@@ -257,9 +261,10 @@ class _SignInScreenState extends State<SignInScreen> {
               final success =
                   await context.read<SignInCubit>().signInAuth(email, password);
               if (success) {
+                // ignore: use_build_context_synchronously
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SplashPage()),
+                  MaterialPageRoute(builder: (context) => const SplashPage()),
                 );
               }
             }
@@ -277,7 +282,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform forgotPassword() {
     return Transform.translate(
-      offset: const Offset(120, -250),
+      offset: const Offset(100, -300),
       child: TextButton(
         onPressed: () => Navigator.push(
           context,
@@ -288,9 +293,9 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Forgot Password',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).translate('SifremiUnuttum'),
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 18,
               ),

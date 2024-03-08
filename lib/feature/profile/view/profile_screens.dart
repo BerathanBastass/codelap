@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:codelap/core/utils/colors.dart';
 import 'package:codelap/feature/profile/settings/view/settings_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../../../core/utils/colors.dart';
+import '../../../core/applocalizations/app_localizations.dart';
+import '../cubit/profile_cubit.dart';
 
 class ProfileScreens extends StatefulWidget {
   const ProfileScreens({Key? key}) : super(key: key);
@@ -16,52 +17,79 @@ class _ProfileScreensState extends State<ProfileScreens> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController t1 = TextEditingController();
   final TextEditingController t2 = TextEditingController();
-  bool _isLoading = true;
+  late ProfileCubit _profileCubit;
+  bool isLoading = false;
+  final profileCubit = ProfileCubit().fetchData();
 
   @override
-  void initState() {
-    super.initState();
-    fetchData();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _profileCubit = BlocProvider.of<ProfileCubit>(context);
+    _profileCubit.fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.pageColor,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsView()));
-            },
-            icon: const Icon(FontAwesomeIcons.bars)),
-        title: const Text(
-          "Profil",
-          style: TextStyle(fontSize: 25),
-        ),
-      ),
-      backgroundColor: CustomColors.pageColor,
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    assetCodeLab(),
-                    const SizedBox(height: 20),
-                    nameTextField(),
-                    const SizedBox(height: 20),
-                    phoneTextField(),
-                    const SizedBox(height: 70),
-                    button(),
-                  ],
-                ),
+    return BlocProvider(
+      create: (context) => _profileCubit,
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLoadedState) {
+            t1.text = state.email;
+            t2.text = state.phone;
+          } else if (state is ProfileDataUpdatedState) {
+          } else if (state is ProfileErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${state.error}'),
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: CustomColors.pageColor,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Settings(),
+                    ),
+                  );
+                },
+                icon: const Icon(FontAwesomeIcons.gear),
+              ),
+              title: const Text(
+                "Profil",
+                style: TextStyle(fontSize: 25),
               ),
             ),
+            backgroundColor: CustomColors.pageColor,
+            body: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          assetCodeLab(),
+                          const SizedBox(height: 20),
+                          nameTextField(),
+                          const SizedBox(height: 20),
+                          phoneTextField(),
+                          const SizedBox(height: 70),
+                          button(),
+                        ],
+                      ),
+                    ),
+                  ),
+          );
+        },
+      ),
     );
   }
 
@@ -138,7 +166,7 @@ class _ProfileScreensState extends State<ProfileScreens> {
   ElevatedButton button() {
     return ElevatedButton(
       onPressed: () {
-        veriEkle();
+        _profileCubit.updateData(t1.text, t2.text);
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -148,41 +176,10 @@ class _ProfileScreensState extends State<ProfileScreens> {
         ),
         backgroundColor: CustomColors.saltWhite,
       ),
-      child: const Text(
-        'Kaydet',
-        style: TextStyle(color: Colors.black),
+      child: Text(
+        AppLocalizations.of(context).translate('Kaydet'),
+        style: const TextStyle(color: Colors.black),
       ),
     );
-  }
-
-  veriEkle() {
-    FirebaseFirestore.instance
-        .collection('Profıl')
-        .doc('Baslik')
-        .set({'Name': t1.text, 'Phone': t2.text});
-  }
-
-  Future<void> fetchData() async {
-    try {
-      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-          .collection('Profıl')
-          .doc('Baslik')
-          .get();
-
-      var data = documentSnapshot.data() as Map<String, dynamic>? ?? {};
-      var email = data['Name'] as String? ?? '';
-      var phone = data['Phone'] as String? ?? '';
-
-      t1.text = email;
-      t2.text = phone;
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (e) {
-      print('Error fetching data: $e');
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 }

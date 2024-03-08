@@ -1,5 +1,5 @@
 import 'package:codelap/core/utils/colors.dart';
-import 'package:codelap/feature/intermediate/intermediate_page.dart';
+import 'package:codelap/feature/intermediate/page.dart';
 
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class SplashPageState extends State<SplashPage> {
           "Welcome aboard my friend",
           style: TextStyle(fontSize: 20),
         ),
-        navigator: const Infos(),
+        navigator: const Home2(),
         durationInSeconds: 5,
       ),
     );

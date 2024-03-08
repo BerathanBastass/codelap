@@ -33,10 +33,10 @@ class AuthCubit extends Cubit<AuthState> {
         user = _auth.currentUser;
 
         if (user!.emailVerified) {
-          emit(EmailVerificationState(true));
+          emit(const EmailVerificationState(true));
           emit(NavigateToHomeState());
         } else {
-          emit(EmailVerificationState(false));
+          emit(const EmailVerificationState(false));
         }
       }
     } catch (e) {

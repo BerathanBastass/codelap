@@ -1,23 +1,20 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'fpassword_cubit_state.dart';
 
-class PasswordResetCubit extends Cubit<PasswordResetState> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
+  ForgotPasswordCubit() : super(ForgotPasswordInitialState());
 
-  PasswordResetCubit() : super(PasswordResetInitial());
-
-  Future<void> resetPassword(String email) async {
-    emit(PasswordResetLoading());
-
+  void resetPassword(String email) async {
     try {
-      await _auth.sendPasswordResetEmail(email: email);
-      emit(
-          PasswordResetSuccess(message: "Password reset email has been sent."));
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+      );
+      emit(ForgotPasswordSuccessState());
     } catch (e) {
-      emit(PasswordResetError(
-          error: "Error: Unable to send password reset email."));
+      emit(ForgotPasswordErrorState(
+          "Error: Unable to send password reset email."));
     }
   }
 }

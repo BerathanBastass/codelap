@@ -1,0 +1,30 @@
+{
+    "Türkçe": "Türkçe",
+    "Almanca": "Almanca",
+    "Dil": "Dil",
+    "Tür": "Tür",
+    "Ayarlar": "Ayarlar",
+    "Kaydet": "Speichern",
+    "İlanOlustur": "İlan Oluştur",
+    "Başlık": "Başlık",
+    "Açıklama": "Açıklama",
+    "Fiyat": "Fiyat",
+    "Resim":"Resim Url",
+    "Oluştur":"Oluştur",
+    "İlanlar":"İlanlar",
+    "İlanDetay": "İlan Detay",
+    "İlanSahibiBilgileri": "İlan Sahibi Bilgileri",
+    "HesapOluştur": "Hesap\nOluştur",
+    "GirisYap": "Giriş Yap",
+    "HelperText": "En az altı karakter girmelisiniz",
+    "Sifre": "Şifre",
+    "EmailValidator": "Lütfen email girin",
+    "PasswordValidator": "Lütfen şifre girin",
+    "TekrarHosgeldiniz": "Tekrar Hoşgeldiniz",
+    "SifremiUnuttum" :"Şifremi Unuttum",
+    "Forgot": "Parola Değiştirme",
+    "EmailHelper": "Şifrenizi sıfırlamak için e-postanızı girin."
+     
+     
+  }
+  

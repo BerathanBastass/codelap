@@ -1,7 +1,8 @@
 import 'package:codelap/core/utils/colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../cubit/cubit/fpassword_cubit_cubit.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -22,25 +23,38 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         backgroundColor: CustomColors.purpleColor,
       ),
       backgroundColor: CustomColors.pageColor,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Form(
-            key: formkey,
-            child: Column(
-              children: [
-                elipsePurple(),
-                elipseWhite(),
-                button(),
-                emailTextField(),
-              ],
-            ),
+      body: BlocProvider(
+        create: (context) => ForgotPasswordCubit(),
+        child: _ForgotPasswordScreenContent(),
+      ),
+    );
+  }
+}
+
+class _ForgotPasswordScreenContent extends StatelessWidget {
+  final formkey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Center(
+        child: Form(
+          key: formkey,
+          child: Column(
+            children: [
+              elipsePurple(),
+              elipseWhite(),
+              button(context),
+              emailTextField(context),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Transform elipsePurple() {
+  Widget elipsePurple() {
     return Transform.translate(
       offset: const Offset(200, -20),
       child: Column(
@@ -53,7 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Transform elipseWhite() {
+  Widget elipseWhite() {
     return Transform.translate(
       offset: const Offset(100, 140),
       child: Column(
@@ -66,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Transform emailTextField() {
+  Widget emailTextField(BuildContext context) {
     return Transform.translate(
       offset: const Offset(-10, -450),
       child: SizedBox(
@@ -75,7 +89,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           controller: emailController,
           decoration: InputDecoration(
             hintText: 'Email',
-            helperText: "Şifrenizi sıfırlamak için e-postanızı girin.",
+            helperText:
+                "Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen",
             hintStyle: const TextStyle(color: CustomColors.salt),
             filled: true,
             fillColor: Colors.white.withOpacity(0.3),
@@ -85,9 +100,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
           ),
           validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter your email';
-            }
+            if (value == null || value.isEmpty) {}
             return null;
           },
           style: const TextStyle(color: Colors.black),
@@ -96,7 +109,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Transform button() {
+  Widget button(BuildContext context) {
     return Transform.translate(
       offset: const Offset(120, -110),
       child: Container(
@@ -108,7 +121,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         child: GestureDetector(
           onTap: () {
-            resetPassword();
+            context
+                .read<ForgotPasswordCubit>()
+                .resetPassword(emailController.text);
           },
           child: InkResponse(
             borderRadius: BorderRadius.circular(50.0),
@@ -119,44 +134,5 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
       ),
     );
-  }
-
-  void resetPassword() async {
-    if (formkey.currentState!.validate()) {
-      try {
-        await FirebaseAuth.instance.sendPasswordResetEmail(
-          email: emailController.text,
-        );
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Şifre sıfırlama e-postası gönderildi.",
-              style: TextStyle(
-                color: CustomColors.pageColor,
-                fontSize: 20,
-              ),
-            ),
-            backgroundColor: CustomColors.purpleColor,
-            duration: Duration(seconds: 5),
-          ),
-        );
-      } catch (e) {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Error: Unable to send password reset email.",
-              style: TextStyle(
-                color: CustomColors.pageColor,
-                fontSize: 20,
-              ),
-            ),
-            backgroundColor: CustomColors.purpleColor,
-            duration: Duration(seconds: 5),
-          ),
-        );
-      }
-    }
   }
 }
