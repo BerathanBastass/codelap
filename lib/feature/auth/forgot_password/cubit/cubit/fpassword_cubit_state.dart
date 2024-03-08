@@ -1,30 +1,13 @@
-import 'package:equatable/equatable.dart';
+abstract class ForgotPasswordEvent {}
 
-abstract class PasswordResetState extends Equatable {
-  const PasswordResetState();
+class ForgotPasswordState {}
 
-  @override
-  List<Object?> get props => [];
-}
+class ForgotPasswordInitialState extends ForgotPasswordState {}
 
-class PasswordResetInitial extends PasswordResetState {}
+class ForgotPasswordSuccessState extends ForgotPasswordState {}
 
-class PasswordResetLoading extends PasswordResetState {}
+class ForgotPasswordErrorState extends ForgotPasswordState {
+  final String errorMessage;
 
-class PasswordResetSuccess extends PasswordResetState {
-  final String message;
-
-  PasswordResetSuccess({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class PasswordResetError extends PasswordResetState {
-  final String error;
-
-  PasswordResetError({required this.error});
-
-  @override
-  List<Object?> get props => [error];
+  ForgotPasswordErrorState(this.errorMessage);
 }

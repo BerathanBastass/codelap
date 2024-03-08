@@ -1,0 +1,34 @@
+{ 
+     "Türkçe": "Türkisch",
+     "Almanca": "Deutsch",
+     "Dil": "Sprache",
+     "Tür": "das Genre",
+     "Ayarlar": "Einstellungen",
+     "Kaydet": "Speichern",
+     "İlanOlustur": "Anzeige erstellen",
+     "Başlık": "Titel",
+     "Açıklama": "Erläuterung",
+     "Fiyat": "Preis",
+     "Resim":"Bild URL",
+     "Oluştur":"Erstellen",
+     "İlanlar":"Anzeige",
+     "İlanDetay": "Anzeigendetails",
+     "İlanSahibiBilgileri": "Informationen des Werbetreibenden",
+     "HesapOluştur": "Benutzerkonto\nerstellen",
+     "GirisYap": "Anmeldung",
+     "HelperText": "Sie müssen mindestens sechs Zeichen eingeben",
+     "Sifre": "Passwort",
+     "EmailValidator": "Bitte geben Sie ihre E-Mail-Adresse ein",
+     "PasswordValidator": "Bitte Passwort eingeben",
+     "TekrarHosgeldiniz": "Willkommen zurück",
+     "SifremiUnuttum" :"Passwort vergessen",
+     "Forgot": "Passwort vergessen",
+     "EmailHelper": "Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen"
+    
+
+
+    
+     
+
+  }
+  

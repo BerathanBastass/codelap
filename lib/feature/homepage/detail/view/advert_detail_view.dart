@@ -1,11 +1,13 @@
+import 'package:codelap/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../core/applocalizations/app_localizations.dart';
 
 class AdvertDetail extends StatefulWidget {
   final String ilanID;
 
-  const AdvertDetail({required this.ilanID});
+  const AdvertDetail({super.key, required this.ilanID});
 
   @override
   State<AdvertDetail> createState() => _AdvertDetailState();
@@ -16,8 +18,10 @@ class _AdvertDetailState extends State<AdvertDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İlan Detay'),
+        backgroundColor: CustomColors.pageColor,
+        title: Text(AppLocalizations.of(context).translate('İlanDetay')),
       ),
+      backgroundColor: CustomColors.pageColor,
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('Ilanlar')
@@ -57,23 +61,24 @@ class _AdvertDetailState extends State<AdvertDetail> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Açıklama: $aciklama',
+                  ' ${AppLocalizations.of(context).translate('Açıklama')}: $aciklama',
                   style: const TextStyle(fontSize: 15),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Tür: $tur',
+                  ' ${AppLocalizations.of(context).translate('Tür')}: $tur',
                   style: const TextStyle(fontSize: 15),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Fiyat: $fiyat',
+                  ' ${AppLocalizations.of(context).translate('Fiyat')}: $fiyat',
                   style: const TextStyle(fontSize: 15),
                 ),
                 const SizedBox(height: 50),
-                const Text(
-                  'İlan Sahibi Bilgileri',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  ' ${AppLocalizations.of(context).translate('İlanSahibiBilgileri')}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 InkWell(

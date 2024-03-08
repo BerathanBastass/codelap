@@ -19,3 +19,10 @@ class AuthErrorsState extends SignInAuthState {
 }
 
 class NavigateToHomeState extends SignInAuthState {}
+
+// Yeni eklenen state
+class VerificationEmailSentState extends SignInAuthState {}
+
+class EmailNotVerifiedState extends SignInAuthState {}
+
+class CheckEmailVerification extends SignInAuthState {}

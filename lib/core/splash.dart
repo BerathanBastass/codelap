@@ -1,5 +1,5 @@
 import 'package:codelap/core/utils/colors.dart';
-import 'package:codelap/feature/intermediate/intermediate_page.dart';
+import 'package:codelap/feature/intermediate/page.dart';
 
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,22 +14,24 @@ class SplashPage extends StatefulWidget {
 class SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
-    return EasySplashScreen(
-      logo: Image.asset('assets/codelab_logo.png'),
-      logoWidth: 200,
-      title: const Text(
-        "Congratulations! Your user has been successfully created",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        textAlign: TextAlign.center,
+    return Scaffold(
+      body: EasySplashScreen(
+        logo: Image.asset('assets/codelab_logo.png'),
+        logoWidth: 200,
+        title: const Text(
+          "Congratulations! Your user has been successfully created",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: CustomColors.pageColor,
+        showLoader: true,
+        loadingText: const Text(
+          "Welcome aboard my friend",
+          style: TextStyle(fontSize: 20),
+        ),
+        navigator: const Home2(),
+        durationInSeconds: 5,
       ),
-      backgroundColor: CustomColors.pageColor,
-      showLoader: true,
-      loadingText: const Text(
-        "Welcome aboard my friend",
-        style: TextStyle(fontSize: 20),
-      ),
-      navigator: const Infos(),
-      durationInSeconds: 5,
     );
   }
 }

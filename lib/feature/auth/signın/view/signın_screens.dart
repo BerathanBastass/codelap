@@ -1,5 +1,5 @@
+// ignore: file_names
 import 'package:codelap/feature/auth/forgot_password/view/fpassword_screens.dart';
-import 'package:codelap/feature/auth/sign%C4%B1n/cubit/sign_n_cubit_state.dart';
 import 'package:codelap/feature/auth/signup/view/signup_screens.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,9 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/applocalizations/app_localizations.dart';
 import '../../../../core/splash.dart';
 import '../../../../core/utils/colors.dart';
 import '../cubit/sign_n_cubit_cubit.dart';
+import '../cubit/sign_n_cubit_state.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late String password = '';
   final formkey = GlobalKey<FormState>();
   final firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +36,7 @@ class _SignInScreenState extends State<SignInScreen> {
           if (state is SignInSuccesssState) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SplashPage()),
+              MaterialPageRoute(builder: (context) => const SplashPage()),
             );
           } else if (state is AuthErrorsState) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -47,6 +50,20 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 backgroundColor: CustomColors.purpleColor,
                 duration: Duration(seconds: 5),
+              ),
+            );
+          } else if (state is EmailNotVerifiedState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Error Message: Email is not verified. Please check your email for verification or press the button after verification!",
+                  style: TextStyle(
+                    color: CustomColors.pageColor,
+                    fontSize: 20,
+                  ),
+                ),
+                backgroundColor: CustomColors.purpleColor,
+                duration: Duration(seconds: 7),
               ),
             );
           }
@@ -105,9 +122,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform buildTextContainer() {
     return Transform.translate(
-      offset: const Offset(40, -300),
+      offset: const Offset(30, -300),
       child: Text(
-        "Tekrar Hoşgeldiniz",
+        AppLocalizations.of(context).translate('TekrarHosgeldiniz'),
         style: GoogleFonts.rem(
           textStyle: const TextStyle(
             fontSize: 45,
@@ -121,7 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform elipseWhite() {
     return Transform.translate(
-      offset: const Offset(90, -80),
+      offset: const Offset(90, -150),
       child: Column(
         children: [
           Image.asset(
@@ -150,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your email';
+              return AppLocalizations.of(context).translate('EmailValidator');
             }
             return null;
           },
@@ -181,7 +198,8 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your password';
+              return AppLocalizations.of(context)
+                  .translate('PasswordValidator');
             }
             return null;
           },
@@ -200,8 +218,9 @@ class _SignInScreenState extends State<SignInScreen> {
       child: TextButton(
         onPressed: () {
           Navigator.push(
+            // ignore: unnecessary_cast
             context as BuildContext,
-            MaterialPageRoute(builder: (context) => const SignUpscreen()),
+            MaterialPageRoute(builder: (context) => const SignUpcreen()),
           );
         },
         style: TextButton.styleFrom(
@@ -213,7 +232,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         child: Text(
-          "Hesap Oluştur",
+          AppLocalizations.of(context).translate('HesapOluştur'),
           style: GoogleFonts.rem(
             textStyle: const TextStyle(
               fontSize: 20,
@@ -227,7 +246,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform button() {
     return Transform.translate(
-      offset: const Offset(120, -410),
+      offset: const Offset(120, -470),
       child: Container(
         width: 90.0,
         height: 100.0,
@@ -236,10 +255,18 @@ class _SignInScreenState extends State<SignInScreen> {
           color: CustomColors.pageColor,
         ),
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (formkey.currentState!.validate()) {
               formkey.currentState!.save();
-              context.read<SignInCubit>().signInAuth(email, password);
+              final success =
+                  await context.read<SignInCubit>().signInAuth(email, password);
+              if (success) {
+                // ignore: use_build_context_synchronously
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SplashPage()),
+                );
+              }
             }
           },
           child: InkResponse(
@@ -255,29 +282,32 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Transform forgotPassword() {
     return Transform.translate(
-        offset: const Offset(100, -210),
-        child: TextButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const ForgotPasswordScreen())),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Forgot Password',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
-              Container(
-                width: 150,
-                height: 5,
-                color: CustomColors.pageColor,
-              ),
-            ],
+      offset: const Offset(100, -300),
+      child: TextButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ForgotPasswordScreen(),
           ),
-        ));
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppLocalizations.of(context).translate('SifremiUnuttum'),
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+              ),
+            ),
+            Container(
+              width: 150,
+              height: 5,
+              color: CustomColors.pageColor,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

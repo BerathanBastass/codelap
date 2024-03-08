@@ -14,12 +14,33 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
-      emit(SignUpSuccessState());
 
-      // Başarılı kayıt işleminden sonra sayfaya yönlendirme
-      emit(NavigateToHomeState()); // Yeni state tanımlanmalı
+      User? user = _auth.currentUser;
+      await user?.sendEmailVerification();
+
+      emit(SignUpSuccessState());
     } catch (e) {
       emit(AuthErrorState("Error during sign up: $e"));
+    }
+  }
+
+  Future<void> checkEmailVerificationAndNavigate() async {
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        await user.reload();
+        user = _auth.currentUser;
+
+        if (user!.emailVerified) {
+          emit(const EmailVerificationState(true));
+          emit(NavigateToHomeState());
+        } else {
+          emit(const EmailVerificationState(false));
+        }
+      }
+    } catch (e) {
+      emit(AuthErrorState("Error during email verification: $e"));
     }
   }
 }

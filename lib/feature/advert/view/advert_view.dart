@@ -1,7 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:codelap/feature/advert/cubit/lan_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/applocalizations/app_localizations.dart';
 import '../../../core/utils/colors.dart';
 
 class AdvertView extends StatefulWidget {
@@ -20,7 +24,6 @@ class _AdvertViewState extends State<AdvertView> {
   final formKey = GlobalKey<FormState>();
   String? selectedType;
 
-  // Seçilebilen 3 kelime
   final List<String> types = [
     'Mobil Uyguluma',
     'Web Sitesi',
@@ -30,8 +33,14 @@ class _AdvertViewState extends State<AdvertView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.pageColor,
       appBar: AppBar(
-        title: const Text('Ilan Oluştur'),
+        leading: null,
+        backgroundColor: CustomColors.pageColor,
+        automaticallyImplyLeading: false,
+        title: Text(
+          AppLocalizations.of(context).translate('İlanOlustur'),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -54,7 +63,7 @@ class _AdvertViewState extends State<AdvertView> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  _ilanOlustur();
+                  _ilanOlustur(context);
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
@@ -65,9 +74,9 @@ class _AdvertViewState extends State<AdvertView> {
                   ),
                   backgroundColor: CustomColors.saltWhite,
                 ),
-                child: const Text(
-                  'Oluştur',
-                  style: TextStyle(color: Colors.black),
+                child: Text(
+                  AppLocalizations.of(context).translate('Oluştur'),
+                  style: const TextStyle(color: Colors.black),
                 ),
               ),
             ],
@@ -81,7 +90,7 @@ class _AdvertViewState extends State<AdvertView> {
     return TextFormField(
       controller: _baslikController,
       decoration: InputDecoration(
-        hintText: 'Başlık',
+        hintText: AppLocalizations.of(context).translate('Başlık'),
         hintStyle: const TextStyle(color: Colors.black),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -104,7 +113,7 @@ class _AdvertViewState extends State<AdvertView> {
     return TextFormField(
       controller: _aciklamaController,
       decoration: InputDecoration(
-        hintText: 'Açıklama',
+        hintText: AppLocalizations.of(context).translate('Açıklama'),
         hintStyle: const TextStyle(color: Colors.black),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -134,7 +143,7 @@ class _AdvertViewState extends State<AdvertView> {
         LengthLimitingTextInputFormatter(8),
       ],
       decoration: InputDecoration(
-        hintText: 'Fiyat',
+        hintText: AppLocalizations.of(context).translate('Fiyat'),
         hintStyle: const TextStyle(color: Colors.black),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -156,7 +165,7 @@ class _AdvertViewState extends State<AdvertView> {
   DropdownButtonFormField<String> typeDropdown() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        hintText: 'Dil',
+        hintText: AppLocalizations.of(context).translate('Tür'),
         hintStyle: const TextStyle(color: Colors.black),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -213,7 +222,7 @@ class _AdvertViewState extends State<AdvertView> {
     return TextFormField(
       controller: _imageController,
       decoration: InputDecoration(
-        hintText: 'Resim Url',
+        hintText: AppLocalizations.of(context).translate('Resim'),
         hintStyle: const TextStyle(color: Colors.black),
         filled: true,
         fillColor: Colors.black.withOpacity(0.3),
@@ -232,38 +241,25 @@ class _AdvertViewState extends State<AdvertView> {
     );
   }
 
-  Future<void> _ilanOlustur() async {
+  Future<void> _ilanOlustur(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      // Form doğrulama başarılı, işlemleri gerçekleştir.
-      try {
-        String baslik = _baslikController.text;
-        String aciklama = _aciklamaController.text;
-        double fiyat = double.parse(_fiyatController.text);
-        String tur = selectedType ?? ''; // Seçilen tip
-        String email = _emailController.text;
-        String image = _imageController.text;
+      AdvertViewCubit cubit = context.read<AdvertViewCubit>();
 
-        await FirebaseFirestore.instance.collection('Ilanlar').add({
-          'baslik': baslik,
-          'aciklama': aciklama,
-          'fiyat': fiyat,
-          'tur': tur,
-          'email': email,
-          'image': image,
-        });
+      String baslik = _baslikController.text;
+      String aciklama = _aciklamaController.text;
+      double fiyat = double.parse(_fiyatController.text);
+      String tur = selectedType ?? '';
+      String email = _emailController.text;
+      String image = _imageController.text;
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ilan başarıyla oluşturuldu.'),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ilan oluşturulurken bir hata oluştu.'),
-          ),
-        );
-      }
+      cubit.createAdvert(
+        baslik: baslik,
+        aciklama: aciklama,
+        fiyat: fiyat,
+        tur: tur,
+        email: email,
+        image: image,
+      );
     }
   }
 }

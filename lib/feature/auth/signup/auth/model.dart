@@ -25,9 +25,9 @@ class UserModel {
   }
 
   UserModel.fromMap(Map<String, dynamic> mapData) {
-    this.uid = mapData["uid"];
-    this.username = mapData["username"];
-    this.email = mapData["email"];
-    this.timestamp = (mapData["timestamp"] as Timestamp?)?.toDate();
+    uid = mapData["uid"];
+    username = mapData["username"];
+    email = mapData["email"];
+    timestamp = (mapData["timestamp"] as Timestamp?)?.toDate();
   }
 }
